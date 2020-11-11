@@ -6,9 +6,6 @@ cmake_minimum_required (VERSION 3.8)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_definitions(-DUNICODE)
-add_definitions(-D_UNICODE)
-
 add_library (HookLib SHARED "HookLib.cpp")
 
 

@@ -8,7 +8,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     _In_ LPWSTR    lpCmdLine,
     _In_ int       nCmdShow)
 {
-    std::vector<LPCWSTR> libraries = { L"StuntLib.dll", L"HookLib.dll" };
+    std::vector<LPCWSTR> libraries = { L"HookLib.dll" };
     for (const auto& library : libraries) {
         if (!std::filesystem::exists(library)) {
             std::wstringstream errorMessage;

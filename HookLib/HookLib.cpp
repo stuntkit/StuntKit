@@ -10,8 +10,8 @@
 
 std::vector<HMODULE> modules;
 
-void LoadModules();
-void UnloadModules();;
+void loadModules();
+void unloadModules();
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -21,20 +21,21 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-        LoadModules();
+        loadModules();
         break;
     case DLL_THREAD_ATTACH:
         break;
     case DLL_THREAD_DETACH:
         break;
     case DLL_PROCESS_DETACH:
-        UnloadModules();
+        unloadModules();
         break;
     }
     return TRUE;
 }
 
-void LoadModules() {
+
+void loadModules() {
     bool failed = false;
     WIN32_FIND_DATA moduleFilesData;
     HANDLE moduleFilesHandle = FindFirstFile(_T("sk*.dll"), &moduleFilesData);
@@ -45,7 +46,7 @@ void LoadModules() {
     else
     {
         do {
-            std::wstringstream ss;
+            std::stringstream ss;
             ss << "[SK] Trying to load " << moduleFilesData.cFileName;
             OutputDebugString(ss.str().c_str());
 
@@ -53,7 +54,7 @@ void LoadModules() {
             if (m == NULL)
             {
                 DWORD err = GetLastError();
-                std::wstringstream ss;
+                std::stringstream ss;
                 ss << "[SK] Module " << moduleFilesData.cFileName <<" could not be loaded\n";
                 ss << "Error: " << err;
                 OutputDebugString(ss.str().c_str());
@@ -62,7 +63,7 @@ void LoadModules() {
             }
             else
             {
-                std::wstringstream ss;
+                std::stringstream ss;
                 ss << "[SK] Module " << moduleFilesData.cFileName << " has been loaded\n";
                 OutputDebugString(ss.str().c_str());
 
@@ -77,7 +78,7 @@ void LoadModules() {
     }
 }
 
-void UnloadModules() {
+void unloadModules() {
     for (auto& module : modules) {
         FreeLibrary(module);
     }
